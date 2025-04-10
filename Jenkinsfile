@@ -1,18 +1,26 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:18'
-        }
-    }
+    agent any
+
     stages {
         stage('Install dependencies') {
             steps {
-                sh 'npm install'
+                script {
+                    def nodeImage = docker.image('node:18')
+                    nodeImage.pull() // Por si acaso no está descargada
+                    nodeImage.inside {
+                        sh 'npm install'
+                    }
+                }
             }
         }
         stage('Run Tests') {
             steps {
-                sh 'npm test'
+                script {
+                    def nodeImage = docker.image('node:18')
+                    nodeImage.inside {
+                        sh 'npm test'
+                    }
+                }
             }
         }
         stage('Build Success') {
