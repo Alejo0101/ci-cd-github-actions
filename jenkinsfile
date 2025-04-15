@@ -1,0 +1,27 @@
+pipeline {
+    agent any
+
+    tools {
+        nodejs "NodeJS" // Esto requiere que luego actives NodeJS en Jenkins
+    }
+
+    stages {
+        stage('Instalar dependencias') {
+            steps {
+                sh 'npm install'
+            }
+        }
+
+        stage('Ejecutar pruebas') {
+            steps {
+                sh 'npm test'
+            }
+        }
+
+        stage('Fin del Pipeline') {
+            steps {
+                echo 'Pipeline terminado exitosamente 🎉'
+            }
+        }
+    }
+}
